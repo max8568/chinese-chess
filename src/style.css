@@ -74,12 +74,33 @@ body {
     grid-template-columns: 1fr 240px;
   }
 }
-/* portrait: board top, panel bottom — the panel keeps its natural height,
-   the board gets the rest. (The panel's own two-column portrait layout is
-   further down, after the .panel rule it has to override.) */
+/*
+ * Portrait: the board keeps the full width — it is the thing you are looking
+ * at — and the panel flows underneath it. On a short screen that pushes the
+ * panel below the fold, so the page scrolls rather than shrinking the board.
+ * (The panel's own two-column portrait layout is further down, after the
+ * .panel rule it has to override.)
+ */
 @media (orientation: portrait) {
+  html,
+  body,
+  #app {
+    height: auto;
+    min-height: 100%;
+  }
   .app {
-    grid-template-rows: 1fr auto;
+    height: auto;
+    min-height: 100%;
+    grid-template-rows: auto auto;
+    align-content: start;
+  }
+  .board-wrap {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+  .board {
+    width: 100%;
+    max-height: none;
   }
   .panel-col {
     justify-content: start;
