@@ -113,7 +113,7 @@ body {
 }
 .selected {
   fill: none;
-  stroke: var(--accent);
+  stroke: #fff;
   stroke-width: 10;
   pointer-events: none;
 }
