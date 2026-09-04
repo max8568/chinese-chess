@@ -119,7 +119,7 @@ export class BoardView {
       this.targets.append(
         board[s]
           ? el('circle', { cx: x, cy: y, r: R + 10, class: 'ring' })
-          : el('circle', { cx: x, cy: y, r: 22, class: 'dot' }),
+          : el('circle', { cx: x, cy: y, r: 34, class: 'dot' }),
       );
     }
   }
