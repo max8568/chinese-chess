@@ -1,2 +1,4 @@
 import './style.css';
-document.getElementById('app')!.textContent = 'Chinese Chess';
+import { App } from './ui/app';
+
+new App(document.getElementById('app')!);

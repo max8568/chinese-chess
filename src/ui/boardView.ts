@@ -170,7 +170,11 @@ export class BoardView {
     const pieceEl = this.pieceEls.get(square);
     const canDrag = !!pieceEl && this.handlers.onPickUp(square);
     this.drag = { square, startX: e.clientX, startY: e.clientY, dragging: false, el: canDrag ? pieceEl! : null };
-    this.svg.setPointerCapture(e.pointerId);
+    try {
+      this.svg.setPointerCapture(e.pointerId);
+    } catch {
+      // synthetic or already-released pointer: fall back to plain event bubbling
+    }
     e.preventDefault();
   }
 
