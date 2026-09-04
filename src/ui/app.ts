@@ -64,10 +64,6 @@ export class App {
       onUndo: () => this.undo(),
       onHint: () => void this.hint(),
       onRestart: () => void this.changeSetting(() => undefined, true),
-      onToggleSound: () => {
-        this.sounds.enabled = !this.sounds.enabled;
-        this.render();
-      },
     });
     document.addEventListener('pointerdown', () => this.sounds.unlock(), { once: true });
     if (import.meta.env.DEV) (window as unknown as { __app: App }).__app = this; // manual testing hook
@@ -110,7 +106,6 @@ export class App {
       level: this.level,
       canUndo: !this.thinking && this.game.history.length >= this.undoSteps(),
       canHint: this.mode === 'ai' && this.humanCanMove(),
-      soundOn: this.sounds.enabled,
     });
     const bottomSide: Side = this.flipped ? 'black' : 'red';
     this.bottomBar.render(this.game.captured(bottomSide));

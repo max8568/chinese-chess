@@ -6,7 +6,6 @@ const NAMES: SoundName[] = ['drop', 'capture', 'check', 'win'];
  * used instead, so real recordings can be dropped in later without code changes.
  */
 export class Sounds {
-  enabled = true;
   private ctx: AudioContext | null = null;
   private buffers = new Map<SoundName, AudioBuffer>();
   private fileUrls = new Map<SoundName, string>();
@@ -30,7 +29,6 @@ export class Sounds {
   }
 
   play(name: SoundName): void {
-    if (!this.enabled) return;
     this.unlock();
     const ctx = this.ctx!;
     const url = this.fileUrls.get(name);

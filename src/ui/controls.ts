@@ -11,7 +11,6 @@ export interface ControlsState {
   level: Level;
   canUndo: boolean;
   canHint: boolean;
-  soundOn: boolean;
 }
 
 export interface ControlsHandlers {
@@ -21,7 +20,6 @@ export interface ControlsHandlers {
   onUndo(): void;
   onHint(): void;
   onRestart(): void;
-  onToggleSound(): void;
 }
 
 const SIDE_NAME: Record<Side, string> = { red: '紅方', black: '黑方' };
@@ -82,7 +80,6 @@ export class Controls {
   private undo = button('悔棋', () => this.h.onUndo());
   private hint = button('提示', () => this.h.onHint());
   private restart = button('重新開始', () => this.h.onRestart());
-  private sound = button('音效開', () => this.h.onToggleSound());
   private sideRow = this.row('顏色', this.side.root);
   private levelRow = this.row('難度', this.level.root);
 
@@ -101,7 +98,6 @@ export class Controls {
       this.undo,
       this.hint,
       this.restart,
-      this.sound,
     );
     container.append(panel);
   }
@@ -127,6 +123,5 @@ export class Controls {
     this.hint.hidden = s.mode !== 'ai';
     this.undo.disabled = !s.canUndo;
     this.hint.disabled = !s.canHint;
-    this.sound.textContent = s.soundOn ? '🔊 音效開' : '🔇 音效關';
   }
 }
