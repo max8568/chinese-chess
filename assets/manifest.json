@@ -1,0 +1,35 @@
+{
+  "sourceStyleReference": "../sample.jpeg",
+  "sheet": "../xiangqi-assets-sheet.png",
+  "board": {
+    "empty": "board/board-empty.png",
+    "gridOverlay": "board/grid-overlay.png",
+    "woodTexture": "textures/wood.png"
+  },
+  "pieces": {
+    "black": [
+      { "file": "pieces/black/rook.png", "character": "車", "count": 2 },
+      { "file": "pieces/black/knight.png", "character": "馬", "count": 2 },
+      { "file": "pieces/black/elephant.png", "character": "象", "count": 2 },
+      { "file": "pieces/black/advisor.png", "character": "士", "count": 2 },
+      { "file": "pieces/black/general.png", "character": "將", "count": 1 },
+      { "file": "pieces/black/cannon.png", "character": "炮", "count": 2 },
+      { "file": "pieces/black/soldier.png", "character": "卒", "count": 5 }
+    ],
+    "red": [
+      { "file": "pieces/red/rook.png", "character": "車", "count": 2 },
+      { "file": "pieces/red/knight.png", "character": "馬", "count": 2 },
+      { "file": "pieces/red/elephant.png", "character": "相", "count": 2 },
+      { "file": "pieces/red/advisor.png", "character": "仕", "count": 2 },
+      { "file": "pieces/red/general.png", "character": "帥", "count": 1 },
+      { "file": "pieces/red/cannon.png", "character": "炮", "count": 2 },
+      { "file": "pieces/red/soldier.png", "character": "兵", "count": 5 }
+    ]
+  },
+  "dimensions": {
+    "piece": "512x512",
+    "emptyBoard": "2048x1952",
+    "gridOverlay": "1024x1064",
+    "woodTexture": "1024x1024"
+  }
+}
