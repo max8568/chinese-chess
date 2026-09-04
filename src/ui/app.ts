@@ -52,7 +52,9 @@ export class App {
     });
     this.banner = new Banner(boardWrap, {
       onAgain: () => void this.newGame(),
-      onUndo: () => this.undo(),
+      // Just get out of the way so the final position is visible. The game
+      // stays over; undo is still available in the panel.
+      onClose: () => this.banner.hide(),
     });
     this.controls = new Controls(panelCol, {
       onMode: (m) => void this.changeSetting(() => (this.mode = m), m !== this.mode),

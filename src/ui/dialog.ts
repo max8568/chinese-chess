@@ -35,14 +35,14 @@ export class Banner {
   private title = document.createElement('div');
   private subtitle = document.createElement('div');
 
-  constructor(container: HTMLElement, h: { onAgain(): void; onUndo(): void }) {
+  constructor(container: HTMLElement, h: { onAgain(): void; onClose(): void }) {
     this.root.className = 'banner';
     this.root.hidden = true;
     this.title.className = 'banner-title';
     this.subtitle.className = 'banner-subtitle';
     const actions = document.createElement('div');
     actions.className = 'actions';
-    actions.append(bigButton('再來一局', 'yes', h.onAgain), bigButton('悔棋', 'no', h.onUndo));
+    actions.append(bigButton('再來一局', 'yes', h.onAgain), bigButton('關閉', 'no', h.onClose));
     this.root.append(this.title, this.subtitle, actions);
     container.append(this.root);
   }
