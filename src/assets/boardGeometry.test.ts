@@ -13,6 +13,16 @@ describe('boardGeometry', () => {
     expect(squareCenter(idx(0, 0), false)).toEqual({ x: BOARD.files[0], y: BOARD.ranks[0] });
     expect(squareCenter(idx(0, 0), true)).toEqual({ x: BOARD.files[8], y: BOARD.ranks[9] });
   });
+  it('keeps every piece fully inside the board image', () => {
+    const r = BOARD.pieceDiameter / 2;
+    for (let i = 0; i < 90; i++) {
+      const { x, y } = squareCenter(i, false);
+      expect(x - r).toBeGreaterThanOrEqual(0);
+      expect(y - r).toBeGreaterThanOrEqual(0);
+      expect(x + r).toBeLessThanOrEqual(BOARD.width);
+      expect(y + r).toBeLessThanOrEqual(BOARD.height);
+    }
+  });
   it('finds the nearest square only when close enough', () => {
     const c = squareCenter(idx(4, 5), false);
     expect(nearestSquare(c.x + 30, c.y - 30, false)).toBe(idx(4, 5));

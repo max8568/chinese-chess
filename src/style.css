@@ -63,7 +63,7 @@ body {
     grid-template-columns: 1fr 240px;
   }
   .board-wrap {
-    width: min(100%, calc((100vh - 24px - 120px) * 2048 / 1952));
+    width: min(100%, calc((100vh - 24px - 120px) * 2048 / 2304));
   }
 }
 /* portrait: board top, panel bottom */

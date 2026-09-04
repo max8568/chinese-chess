@@ -2,8 +2,8 @@
 
 這套素材依 `sample.jpeg` 的淺色木紋、圓形木棋與紅黑書法字風格重新生成。
 
-- `board/board-empty.png`：完整空棋盤，2048 × 1952
-- `board/grid-overlay.png`：透明棋盤格線，1024 × 1064
+- `board/board-empty.png`：完整空棋盤，2048 × 2304；每格 220 × 220
+- `board/grid-overlay.png`：透明棋盤格線，1024 × 1152；每格 110 × 110
 - `textures/wood.png`：木紋底圖，1024 × 1024
 - `pieces/black/*.png`：黑方 7 種棋子，透明背景，512 × 512
 - `pieces/red/*.png`：紅方 7 種棋子，透明背景，512 × 512

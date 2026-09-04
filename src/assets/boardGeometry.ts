@@ -1,16 +1,23 @@
 import { fileOf, idx, rankOf } from '../engine/types';
 
 /**
- * Measured on assets/board/board-empty.png (2048x1952). The AI-drawn grid is
- * not evenly spaced (the rightmost file is ~30% wider), so pieces are placed on
- * the measured intersections. Swap this table when swapping the board image.
+ * Measured on assets/board/board-empty.png (2048x2304). The grid is evenly
+ * spaced at 220px, with the top-left intersection at (144, 162).
+ *
+ * Swap these five numbers when swapping the board image. If a future board has
+ * uneven spacing, replace `files` and `ranks` with literal coordinate arrays;
+ * nothing else reads CELL or ORIGIN.
  */
+const CELL = 220;
+const ORIGIN_X = 144;
+const ORIGIN_Y = 162;
+
 export const BOARD = {
   width: 2048,
-  height: 1952,
-  files: [97.5, 314.5, 536.5, 763.5, 991.5, 1215.5, 1439.5, 1660, 1950.5],
-  ranks: [87, 280.5, 477, 677, 874.5, 1070.5, 1264, 1457.5, 1652.5, 1853],
-  pieceDiameter: 180, // 0.92 x mean rank spacing (196)
+  height: 2304,
+  files: Array.from({ length: 9 }, (_, i) => ORIGIN_X + i * CELL),
+  ranks: Array.from({ length: 10 }, (_, i) => ORIGIN_Y + i * CELL),
+  pieceDiameter: Math.round(CELL * 0.92),
 };
 
 const MIN_SPACING = Math.min(

@@ -28,8 +28,9 @@
   },
   "dimensions": {
     "piece": "512x512",
-    "emptyBoard": "2048x1952",
-    "gridOverlay": "1024x1064",
+    "emptyBoard": "2048x2304",
+    "gridOverlay": "1024x1152",
+    "cellSize": "220x220",
     "woodTexture": "1024x1024"
   }
 }
