@@ -117,6 +117,13 @@ body {
   stroke-width: 10;
   pointer-events: none;
 }
+/* origin and destination of the most recent move */
+.last-move-ring {
+  fill: none;
+  stroke: rgba(60, 175, 90, 0.65);
+  stroke-width: 10;
+  pointer-events: none;
+}
 .hint {
   stroke: #2b7de9;
   fill: rgba(43, 125, 233, 0.85);

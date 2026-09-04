@@ -34,6 +34,7 @@ interface DragState {
 
 export class BoardView {
   private svg: SVGSVGElement;
+  private lastMove = el('g', { class: 'last-move' });
   private targets = el('g', { class: 'targets' });
   private pieces = el('g', { class: 'pieces' });
   private overlay = el('g', { class: 'overlay' });
@@ -52,7 +53,7 @@ export class BoardView {
       class: 'board',
     });
     const img = el('image', { href: BOARD_IMAGE_URL, x: 0, y: 0, width: BOARD.width, height: BOARD.height });
-    this.svg.append(img, this.targets, this.pieces, this.overlay);
+    this.svg.append(img, this.lastMove, this.targets, this.pieces, this.overlay);
     container.append(this.svg);
     this.svg.addEventListener('pointerdown', (e) => this.onPointerDown(e));
     this.svg.addEventListener('pointermove', (e) => this.onPointerMove(e));
@@ -110,6 +111,19 @@ export class BoardView {
         resolve();
       }, 220),
     );
+  }
+
+  /** Ring the origin and destination of the most recent move. */
+  showLastMove(from: number, to: number): void {
+    this.lastMove.replaceChildren();
+    for (const square of [from, to]) {
+      const { x, y } = squareCenter(square, this.flipped);
+      this.lastMove.append(el('circle', { cx: x, cy: y, r: R + 8, class: 'last-move-ring' }));
+    }
+  }
+
+  clearLastMove(): void {
+    this.lastMove.replaceChildren();
   }
 
   showTargets(squares: number[], board: Board): void {

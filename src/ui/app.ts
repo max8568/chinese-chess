@@ -83,6 +83,7 @@ export class App {
     this.over = false;
     this.banner.hide();
     this.clearSelection();
+    this.view.clearLastMove();
     this.view.setPosition(this.game.board);
     this.render();
   }
@@ -122,6 +123,13 @@ export class App {
     this.view.clearTargets();
   }
 
+  /** Ring the move at the top of the history, or clear the rings if there is none. */
+  private showLastMoveMarkers(): void {
+    const last = this.game.history[this.game.history.length - 1];
+    if (last) this.view.showLastMove(last.move.from, last.move.to);
+    else this.view.clearLastMove();
+  }
+
   // ---- board input ----
   private onPickUp(sq: number): boolean {
     if (!this.humanCanMove()) return false;
@@ -158,6 +166,7 @@ export class App {
   private async commit(move: Move, animate: boolean): Promise<void> {
     const entry = this.game.play(move);
     this.clearSelection();
+    this.view.showLastMove(move.from, move.to);
     this.generation++;
     if (animate) await this.view.animateMove(move.from, move.to, this.game.board);
     else this.view.setPosition(this.game.board);
@@ -204,6 +213,7 @@ export class App {
     this.over = false;
     this.banner.hide();
     this.clearSelection();
+    this.showLastMoveMarkers();
     this.view.setPosition(this.game.board);
     this.render();
   }
@@ -232,6 +242,7 @@ export class App {
     this.thinking = false;
     this.banner.hide();
     this.clearSelection();
+    this.view.clearLastMove();
     this.view.setLocked(false);
     this.view.setFlipped(this.flipped);
     this.view.setPosition(this.game.board);
