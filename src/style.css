@@ -36,17 +36,27 @@ body {
   min-height: 0;
   gap: 6px;
 }
+/*
+ * The wrapper takes whatever space is left after the captured bars, and the
+ * board scales down to fit inside it in BOTH directions. Without the
+ * max-height the SVG keeps its natural height while the wrapper shrinks, and
+ * the board spills over the panel below it (portrait tablets).
+ */
 .board-wrap {
   position: relative;
-  width: 100%;
-  max-width: 100%;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
   min-height: 0;
 }
 .board {
   display: block;
-  width: 100%;
+  width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: 100%;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -55,6 +65,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 0;
 }
 
 /* landscape: board left, panel right */
@@ -62,15 +73,13 @@ body {
   .app {
     grid-template-columns: 1fr 240px;
   }
-  .board-wrap {
-    width: min(100%, calc((100vh - 24px - 120px) * 2048 / 2304));
-  }
 }
-/* portrait: board top, panel bottom */
+/* portrait: board top, panel bottom — the panel keeps its natural height,
+   the board gets the rest. (The panel's own two-column portrait layout is
+   further down, after the .panel rule it has to override.) */
 @media (orientation: portrait) {
   .app {
-    grid-template-rows: auto 1fr;
-    align-content: start;
+    grid-template-rows: 1fr auto;
   }
   .panel-col {
     justify-content: start;
@@ -146,6 +155,26 @@ body {
   border-radius: 16px;
   padding: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+/* Portrait: lay the controls out two-up so the panel stays short and the
+   board keeps as much of the screen height as possible. */
+@media (orientation: portrait) {
+  .panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  .panel > .status {
+    grid-column: 1 / -1;
+  }
+}
+/* On a phone, half a row is too narrow for the 1/2/3 segments (about 35px
+   each). Give the labelled rows the full width there; the plain buttons
+   still pair up. */
+@media (orientation: portrait) and (max-width: 560px) {
+  .panel > .row {
+    grid-column: 1 / -1;
+  }
 }
 .status {
   font-size: 24px;
@@ -227,6 +256,7 @@ body {
 /* captured bars */
 .captured {
   display: flex;
+  flex: 0 0 auto;
   gap: 10px;
   min-height: 44px;
   align-items: center;

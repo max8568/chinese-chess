@@ -62,6 +62,11 @@ export class BoardView {
   ) {
     this.svg = el('svg', {
       viewBox: `0 0 ${BOARD.width} ${BOARD.height}`,
+      // Intrinsic size, so CSS can scale the board down to fit both the
+      // available width and height. Without it the SVG has a ratio but no
+      // size, and `width: auto` collapses it to nothing.
+      width: BOARD.width,
+      height: BOARD.height,
       preserveAspectRatio: 'xMidYMid meet',
       class: 'board',
     });
