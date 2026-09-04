@@ -32,6 +32,19 @@ interface DragState {
   el: SVGGElement | null;
 }
 
+/** Last-move rings: the origin hugs the piece outline, the destination matches the selection ring. */
+const LAST_MOVE_FROM_R = R;
+const LAST_MOVE_TO_R = R + 8;
+/**
+ * Dash pattern for the origin ring, sized so the dashes divide the circumference
+ * evenly (no visible seam). Computed rather than a CSS `stroke-dasharray` because
+ * the right values depend on the radius.
+ */
+const LAST_MOVE_FROM_DASH = (() => {
+  const period = (2 * Math.PI * LAST_MOVE_FROM_R) / 15;
+  return `${(period * 0.55).toFixed(2)} ${(period * 0.45).toFixed(2)}`;
+})();
+
 export class BoardView {
   private svg: SVGSVGElement;
   private lastMove = el('g', { class: 'last-move' });
@@ -113,13 +126,21 @@ export class BoardView {
     );
   }
 
-  /** Ring the origin and destination of the most recent move. */
+  /** Ring the origin (small, faint, dashed) and destination (solid) of the most recent move. */
   showLastMove(from: number, to: number): void {
     this.lastMove.replaceChildren();
-    for (const square of [from, to]) {
-      const { x, y } = squareCenter(square, this.flipped);
-      this.lastMove.append(el('circle', { cx: x, cy: y, r: R + 8, class: 'last-move-ring' }));
-    }
+    const a = squareCenter(from, this.flipped);
+    this.lastMove.append(
+      el('circle', {
+        cx: a.x,
+        cy: a.y,
+        r: LAST_MOVE_FROM_R,
+        class: 'last-move-ring from',
+        'stroke-dasharray': LAST_MOVE_FROM_DASH,
+      }),
+    );
+    const b = squareCenter(to, this.flipped);
+    this.lastMove.append(el('circle', { cx: b.x, cy: b.y, r: LAST_MOVE_TO_R, class: 'last-move-ring to' }));
   }
 
   clearLastMove(): void {

@@ -120,9 +120,14 @@ body {
 /* origin and destination of the most recent move */
 .last-move-ring {
   fill: none;
-  stroke: rgba(60, 175, 90, 0.65);
   stroke-width: 10;
   pointer-events: none;
+}
+.last-move-ring.from {
+  stroke: rgba(60, 175, 90, 0.32);
+}
+.last-move-ring.to {
+  stroke: rgba(60, 175, 90, 0.65);
 }
 .hint {
   stroke: #2b7de9;
