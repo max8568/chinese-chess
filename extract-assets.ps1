@@ -5,6 +5,77 @@ param(
 
 Add-Type -AssemblyName System.Drawing
 
+if (-not ('BoardBackgroundCleaner' -as [type])) {
+    $drawingAssemblyDirectory = Split-Path ([System.Drawing.Bitmap].Assembly.Location)
+    $drawingReferences = @(
+        (Join-Path $drawingAssemblyDirectory 'System.Drawing.Common.dll'),
+        (Join-Path $drawingAssemblyDirectory 'System.Drawing.Primitives.dll'),
+        (Join-Path $drawingAssemblyDirectory 'System.Private.Windows.Core.dll'),
+        (Join-Path $drawingAssemblyDirectory 'System.Private.Windows.GdiPlus.dll')
+    )
+    Add-Type -ReferencedAssemblies $drawingReferences -TypeDefinition @'
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+
+public static class BoardBackgroundCleaner
+{
+    public static void RemoveWhite(string path)
+    {
+        Bitmap source;
+        using (var fileBitmap = new Bitmap(path))
+        {
+            source = fileBitmap.Clone(
+                new Rectangle(0, 0, fileBitmap.Width, fileBitmap.Height),
+                PixelFormat.Format32bppArgb
+            );
+        }
+
+        var rectangle = new Rectangle(0, 0, source.Width, source.Height);
+        var data = source.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+        var bytes = new byte[Math.Abs(data.Stride) * data.Height];
+        Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
+
+        for (var y = 0; y < source.Height; y++)
+        {
+            for (var x = 0; x < source.Width; x++)
+            {
+                var offset = (y * data.Stride) + (x * 4);
+                var blue = bytes[offset];
+                var green = bytes[offset + 1];
+                var red = bytes[offset + 2];
+                var alpha = bytes[offset + 3];
+                var maximum = Math.Max(red, Math.Max(green, blue));
+                var minimum = Math.Min(red, Math.Min(green, blue));
+                var spread = maximum - minimum;
+
+                // Pure and near-pure neutral whites are the exterior backdrop.
+                if (minimum >= 235 && spread <= 8)
+                {
+                    bytes[offset + 3] = 0;
+                }
+                // Preserve smooth antialiasing on the rounded wooden edge.
+                else if (minimum >= 210 && spread <= 45)
+                {
+                    var coverage = Math.Min(255, Math.Max(0, ((spread - 8) * 6) + ((235 - minimum) * 4)));
+                    bytes[offset + 3] = (byte)Math.Min(alpha, coverage);
+                }
+            }
+        }
+
+        Marshal.Copy(bytes, 0, data.Scan0, bytes.Length);
+        source.UnlockBits(data);
+        var temporaryPath = path + ".transparent.png";
+        source.Save(temporaryPath, ImageFormat.Png);
+        source.Dispose();
+        System.IO.File.Copy(temporaryPath, path, true);
+        System.IO.File.Delete(temporaryPath);
+    }
+}
+'@
+}
+
 $sourceImage = [System.Drawing.Bitmap]::FromFile($Source)
 
 function Export-Crop {
@@ -175,6 +246,7 @@ function Export-SquareGridOverlay {
 try {
     Export-Crop 'board/board-empty.png' ([System.Drawing.Rectangle]::new(50, 21, 780, 744)) 2048 1952
     Rectify-BoardGrid (Join-Path $OutputRoot 'board/board-empty.png')
+    [BoardBackgroundCleaner]::RemoveWhite((Join-Path $OutputRoot 'board/board-empty.png'))
     Export-Crop 'textures/wood.png' ([System.Drawing.Rectangle]::new(878, 27, 410, 346)) 1024 1024
     Export-SquareGridOverlay 'board/grid-overlay.png'
 

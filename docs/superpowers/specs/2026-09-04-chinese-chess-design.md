@@ -151,7 +151,8 @@ tools/
 採用 `assets/` 內的點陣素材（AI 生成後以 `extract-assets.ps1` 從 `xiangqi-assets-sheet.png` 切出）。
 
 量測事實（棋盤圖 2026-09-04 下午更新後重新量測）：
-- `assets/board/board-empty.png` 2048×2304。格線等距 220，左上角交叉點在 (144, 162)，
+- `assets/board/board-empty.png` 2048×2304，透明背景（四個圓角是透空的，約佔 0.6% 的像素，
+  頁面底色會從圓角透出來）。格線等距 220，左上角交叉點在 (144, 162)，
   所以直線 x = 144 + 220i（i = 0..8），橫線 y = 162 + 220j（j = 0..9）。
   以實際像素驗證，誤差在 1 像素以內。
 - `assets/board/grid-overlay.png` 1024×1152，正好是上圖的一半，格線位置一致；程式不使用它。

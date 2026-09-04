@@ -4,7 +4,8 @@
   "board": {
     "empty": "board/board-empty.png",
     "gridOverlay": "board/grid-overlay.png",
-    "woodTexture": "textures/wood.png"
+    "woodTexture": "textures/wood.png",
+    "background": "transparent"
   },
   "pieces": {
     "black": [
