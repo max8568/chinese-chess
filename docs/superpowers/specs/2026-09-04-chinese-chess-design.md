@@ -176,6 +176,9 @@ tools/
 - GitHub Actions：push 到 `main` 時 `npm ci`、`npm test`、`npm run build`，發布 `dist/` 到 GitHub Pages（Pages 來源設為 Actions）。
 - Vite `base` 設為 `/chinese-chess/`。
 - 分頁小圖示用紅「帥」棋子圖。
+- 加到 iOS 主畫面的圖示用 `apple-touch-icon.png`（專案根目錄，180×180 不透明，黑「象」）。
+  網站在 `/chinese-chess/` 子路徑下，iOS 不會去找根目錄的預設檔名，所以 index.html 一定要寫明 `<link rel="apple-touch-icon">`。
+  `tools/prepare-assets.py` 會把它複製到 `assets/web/`。
 - 操作 gh 時切換到 `max8568`，完成後切回 `igs-hanhongchen`。
 
 ## 10. 測試

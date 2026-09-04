@@ -13,7 +13,7 @@
     npm test         # 規則引擎與電腦對手的單元測試
     npm run build    # 輸出到 dist/
 
-素材處理：`python tools/prepare-assets.py`（需要 Pillow、numpy），會把 `assets/` 的原圖處理成 `assets/web/` 的網頁用檔。
+素材處理：`python tools/prepare-assets.py`（需要 Pillow、numpy），會把 `assets/` 的原圖與根目錄的 `apple-touch-icon.png` 處理成 `assets/web/` 的網頁用檔。
 棋盤交叉點座標在 `src/assets/boardGeometry.ts`，換棋盤圖時改這裡。
 
 設計文件：`docs/superpowers/specs/2026-09-04-chinese-chess-design.md`

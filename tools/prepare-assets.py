@@ -4,9 +4,12 @@ prepare-assets.py - 把 assets/ 的原始素材處理成網頁用檔，輸出到
   棋盤  assets/board/board-empty.png  -> assets/web/board.webp   (1536 寬, 有透明度)
   棋子  assets/pieces/<side>/<type>.png -> assets/web/pieces/<side>/<type>.png
         以 alpha >= 250 的範圍裁切、置中到正方形畫布、縮到 384x384
+  圖示  apple-touch-icon.png（專案根目錄）-> assets/web/apple-touch-icon.png
+        原樣複製；加到主畫面時 iOS 用的圖示
 
 執行：python tools/prepare-assets.py
 """
+import shutil
 from pathlib import Path
 from PIL import Image
 import numpy as np
@@ -48,11 +51,25 @@ def prepare_piece(src: Path, dst: Path):
     print(f"{dst.relative_to(ROOT)}  crop=({x0},{y0})-({x1},{y1})")
 
 
+def copy_touch_icon():
+    src = ROOT / "apple-touch-icon.png"
+    if not src.exists():
+        print("apple-touch-icon.png not found at the project root, skipped")
+        return
+    im = Image.open(src)
+    if im.size != (180, 180):
+        print(f"warning: apple-touch-icon.png is {im.size}, iOS expects 180x180")
+    OUT.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, OUT / "apple-touch-icon.png")
+    print(f"apple-touch-icon.png {im.size} copied")
+
+
 def main():
     prepare_board()
     for side in ("red", "black"):
         for src in sorted((SRC / "pieces" / side).glob("*.png")):
             prepare_piece(src, OUT / "pieces" / side / src.name)
+    copy_touch_icon()
 
 
 if __name__ == "__main__":
